@@ -54,6 +54,7 @@ jobs:
 
       # Upload test results (optional)
       - name: Upload Test Results
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: artifact
