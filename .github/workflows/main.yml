@@ -32,6 +32,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Grant execute permissions to gradlew
+        run: chmod +x ./gradlew
+
       # Build and run tests
       - name: Build and Test
         run: ./gradlew clean build --no-daemon
@@ -52,7 +55,4 @@ jobs:
             echo "Code coverage is below 75% ($COVERAGE%). Failing the build."
             exit 1
           fi
-
-      - name: Grant execute permissions to gradlew
-        run: chmod +x ./gradlew
 
