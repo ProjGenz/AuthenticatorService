@@ -52,14 +52,3 @@ jobs:
             exit 1
           fi
 
-#      # Upload test results (optional)
-#      - name: Upload Test Results
-#        if: ${{ always() }}
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: artifact
-#          path: build/reports/tests/test
-#          if-no-files-found: warn
-#          compression-level: 6
-#          overwrite: false
-#          include-hidden-files: false
