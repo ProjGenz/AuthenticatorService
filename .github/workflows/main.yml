@@ -50,7 +50,7 @@ jobs:
       # Enforce minimum code coverage
       - name: Enforce Code Coverage
         run: |
-          COVERAGE=$(grep -oP 'coverage: \K[0-9]+' build/reports/jacoco/test/html/index.html)
+          COVERAGE=$(grep -oP 'coverage: \K[0-9]+' reports/coverage/index.html)
           if [ "$COVERAGE" -lt 75 ]; then
             echo "Code coverage is below 75% ($COVERAGE%). Failing the build."
             exit 1
