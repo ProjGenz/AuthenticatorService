@@ -13,7 +13,7 @@ jobs:
     steps:
       # Checkout the code
       - name: Checkout code
-        uses: actions/artifact@v4
+      - uses: actions/checkout@v4
 
       # Set up JDK 21
       - name: Set up JDK 21
