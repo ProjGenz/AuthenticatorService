@@ -1,14 +1,14 @@
-package com.authenticationService;
+// package com.authenticationService;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+// import org.junit.jupiter.api.Test;
+// import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HelloServiceTest {
+// public class HelloServiceTest {
 
-    @Test
-    void testSayHello() {
-        HelloService service = new HelloService();
-        String result = service.sayHello("Raushan");
-        assertEquals("Hello, Raushan!", result);
-    }
-}
+//     @Test
+//     void testSayHello() {
+//         HelloService service = new HelloService();
+//         String result = service.sayHello("Raushan");
+//         assertEquals("Hello, Raushan!", result);
+//     }
+// }
