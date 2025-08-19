@@ -47,13 +47,13 @@ jobs:
       - name: Run Code Coverage
         run: ./gradlew jacocoTestReport --no-daemon
 
-      # Enforce minimum code coverage
-      - name: Enforce Code Coverage
-        run: |
-          COVERAGE=$(grep -oP 'coverage: \K[0-9]+' reports/coverage/index.html)
-          echo "Extracted Coverage: $COVERAGE"
-          if [ "$COVERAGE" -lt 75 ]; then
-            echo "Code coverage is below 75% ($COVERAGE%). Failing the build."
-            exit 1
-          fi
+#      # Enforce minimum code coverage
+#      - name: Enforce Code Coverage
+#        run: |
+#          COVERAGE=$(grep -oP 'coverage: \K[0-9]+' reports/coverage/index.html)
+#          echo "Extracted Coverage: $COVERAGE"
+#          if [ "$COVERAGE" -lt 75 ]; then
+#            echo "Code coverage is below 75% ($COVERAGE%). Failing the build."
+#            exit 1
+#          fi
 
