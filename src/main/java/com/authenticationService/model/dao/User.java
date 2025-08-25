@@ -10,11 +10,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID userId;
+    private UUID Id;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
@@ -31,7 +31,7 @@ public class User {
     @Column(name = "problemsSolved", nullable = false)
     private int problemsSolved;
 
-    @Column(name = "rank", nullable = false)
+    @Column(name = "`rank`", nullable = false)
     private int rank;
 
     @Column(name = "contests", nullable = false)

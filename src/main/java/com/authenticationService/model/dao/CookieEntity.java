@@ -1,12 +1,11 @@
 package com.authenticationService.model.dao;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -15,6 +14,12 @@ import lombok.Setter;
 @Setter
 @Table(name = "cookie_entity")
 public class CookieEntity {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;  // Primary key
+
     @Column(name = "user_email", nullable = false, unique = true)
     private String email;
 

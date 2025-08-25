@@ -1,47 +1,80 @@
 package com.authenticationService.controller;
 
+import com.authenticationService.dto.LoginRequest;
+import com.authenticationService.dto.SignupRequest;
+import com.authenticationService.service.AuthService;
 import com.authenticationService.service.Signup;
+import com.authenticationService.service.impl.SignupImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Objects;
-
-@RestController("/auth")
+@RestController
+@RequestMapping("/auth")  // base path for all auth APIs
 public class AuthController {
 
+    private static final String SUPPORTED_API_VERSION = "1.0.0";
     private final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
+
     private final Signup signupService;
+    private final AuthService authService;
 
     @Autowired
-    public AuthController (Signup signupService) {
+    public AuthController(Signup signupService, AuthService authService) {
         this.signupService = signupService;
+        this.authService = authService;
     }
 
+    // ✅ Register
     @PostMapping("/register")
     public String register(
-            @RequestParam(name = "email", required = true) String email,
-            @RequestParam(name = "password", required = true) String password,
-            @RequestParam(name = "username", required = true) String username,
-            @RequestHeader(name = "api-version", required = false, defaultValue = "1.0.0") String apiVersion,
-            HttpServletResponse httpServletResponse
-    )
-    {
-        if (!Objects.equals(apiVersion, "1.0.0")) {
+            @RequestBody SignupRequest signupRequest,
+            @RequestHeader(name = "api-version", required = false, defaultValue = SUPPORTED_API_VERSION) String apiVersion,
+            HttpServletResponse response
+    ) {
+        if (!SUPPORTED_API_VERSION.equals(apiVersion)) {
             LOGGER.error("Unsupported API version: {}", apiVersion);
-            return new Exception("Unsupported API version: " + apiVersion).getMessage();
+            throw new IllegalArgumentException("Unsupported API version: " + apiVersion);
         }
-        signupService.register(email, password, username, httpServletResponse);
+
+        signupService.register(
+                signupRequest.getEmail(),
+                signupRequest.getPassword(),
+                signupRequest.getUsername(),
+                response
+        );
         return "User registered successfully";
     }
 
-
-    @GetMapping("/get-session-time")
-    public long getRemainingSessionTime(        //CALL this api periodically from the ui (say each minute) to check remaining session time, when time <= 5 mins, ask user if he wants to refresh or not, if yes, call refresh api
-            @RequestParam(name = "email", required = true) String email
+    // ✅ Login
+    @PostMapping("/login")
+    public String login(
+            @RequestBody LoginRequest loginRequest,
+            @RequestHeader(name = "api-version", required = false, defaultValue = SUPPORTED_API_VERSION) String apiVersion,
+            HttpServletResponse response
     ) {
+        if (!SUPPORTED_API_VERSION.equals(apiVersion)) {
+            LOGGER.error("Unsupported API version: {}", apiVersion);
+            throw new IllegalArgumentException("Unsupported API version: " + apiVersion);
+        }
+
+        authService.login(loginRequest, response);
+        return "Login successful";
+    }
+
+    // ✅ Get session time
+    @GetMapping("/get-session-time")
+    public long getRemainingSessionTime(
+            @RequestParam(name = "email") String email,
+            @RequestHeader(name = "api-version", required = false, defaultValue = SUPPORTED_API_VERSION) String apiVersion
+    ) {
+        if (!SUPPORTED_API_VERSION.equals(apiVersion)) {
+            LOGGER.error("Unsupported API version: {}", apiVersion);
+            throw new IllegalArgumentException("Unsupported API version: " + apiVersion);
+        }
+
         return signupService.getRemainingSessionTime(email);
     }
 }
