@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.UUID;
 
+// do we really need this class???????
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

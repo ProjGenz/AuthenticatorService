@@ -1,5 +1,6 @@
 package com.authenticationService.service;
 import com.authenticationService.dto.LoginRequest;
+import com.authenticationService.dto.LoginResponse;
 import com.authenticationService.model.dao.User;
 import com.authenticationService.repository.UserRepository;
 import com.authenticationService.util.JwtUtil;
@@ -9,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.Optional;
 
 @Service
-public class AuthService {
+public class Loginimpl {
 
     @Autowired
     private UserRepository userRepository;
@@ -23,7 +25,7 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void login(LoginRequest loginRequest, HttpServletResponse response) {
+    public LoginResponse login(LoginRequest loginRequest, HttpServletResponse response) {
         Optional<User> userOpt;
 
         // Check by email or username
@@ -45,14 +47,18 @@ public class AuthService {
         }
 
         // Generate JWT
-        String token = jwtUtil.generateToken(user.getUsername());
+        String token = jwtUtil.generateTokenWithClaims(user);
 
         // Store in HTTP-only cookie
         Cookie cookie = new Cookie("jwt", token);
         cookie.setHttpOnly(true);
         cookie.setSecure(true); // only over HTTPS in production
         cookie.setPath("/");
-        cookie.setMaxAge((int) (60 * 60 * 24 * 20)); // 20 days
+        cookie.setMaxAge((int) Duration.ofDays(20).getSeconds());
         response.addCookie(cookie);
+
+        // Return DTO instead of raw string
+        return new LoginResponse("logged in successfully", user.getUsername(), user.getEmail());
     }
+
 }

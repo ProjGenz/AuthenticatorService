@@ -1,14 +1,13 @@
 package com.authenticationService.model.dao;
-
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 @Setter
 @Table(name = "users")
 public class User {
